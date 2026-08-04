@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MovieTracker26</string>
+    <string name="movie1">The Batman</string>
+    <string name="movie2">Spiderman: Brand New Day</string>
 </resources>
