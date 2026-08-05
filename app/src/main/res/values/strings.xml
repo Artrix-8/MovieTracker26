@@ -2,4 +2,7 @@
     <string name="app_name">MovieTracker26</string>
     <string name="movie1">The Batman</string>
     <string name="movie2">Spiderman: Brand New Day</string>
+    <string name="movie3">Toy Story 5</string>
+    <string name="movie4">The Odyssey</string>
+    <string name="movie5">Hadestown</string>
 </resources>

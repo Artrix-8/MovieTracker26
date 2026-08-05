@@ -32,10 +32,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movietracker26.data.Datasource
@@ -101,53 +99,47 @@ private fun MovieList(movieList: List<Movie>, modifier: Modifier = Modifier) {
 
 @Composable
 private fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
         modifier = modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        CardContent(movie)
-    }
-}
-
-@Composable
-private fun CardContent(movie: Movie) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
-    Row(
-        modifier = Modifier
-            .padding(24.dp)
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
+        Row(
+            modifier = Modifier
+                .padding(24.dp)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
                 )
-            )
-    ) {
-        Column(modifier = Modifier.weight(1f).padding(12.dp)) {
-            Image(
-                painter = painterResource(movie.imageResourceId),
-                contentDescription = stringResource(movie.stringResourceId),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(194.dp),
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                text = stringResource(movie.stringResourceId),
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.headlineSmall
-            )
-            if (expanded) {
-                Text(text = ("Composem ipsum color sit lazy, " +
-                        "padding theme elit, sed do bouncy. ").repeat(4),
+        ) {
+            Column(modifier = Modifier.weight(1f).padding(12.dp)) {
+                Image(
+                    painter = painterResource(movie.imageResourceId),
+                    contentDescription = stringResource(movie.stringResourceId),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(194.dp),
+                    contentScale = ContentScale.Crop
                 )
-            }
-            ElevatedButton(
-                onClick = { expanded = !expanded }
-            ) {
-                Text(if (expanded) "Hide description" else "Show description")
+                Text(
+                    text = stringResource(movie.stringResourceId),
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                if (expanded) {
+                    Text(text = ("Compose ipsum color sit lazy, " +
+                            "padding theme elit, sed do bouncy. ").repeat(4),
+                    )
+                }
+                ElevatedButton(
+                    onClick = { expanded = !expanded }
+                ) {
+                    Text(if (expanded) "Hide description" else "Show description")
+                }
             }
         }
     }
@@ -157,13 +149,13 @@ private fun CardContent(movie: Movie) {
     showBackground = true,
     widthDp = 320,
     uiMode = UI_MODE_NIGHT_YES,
-    name = "GreetingPreviewDark"
+    name = "MoviePreviewDark"
 )
 @Preview(showBackground = true, widthDp = 320)
 @Composable
-fun GreetingPreview() {
+fun MoviePreview() {
     MovieTracker26Theme {
-        MovieCard(Movie(R.string.movie2, R.drawable.movie_spidermanbrandnewday))
+        MovieCard(Movie(R.string.movie1, R.drawable.movie1))
     }
 }
 
