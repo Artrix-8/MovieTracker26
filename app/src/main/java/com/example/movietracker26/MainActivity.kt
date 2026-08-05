@@ -7,10 +7,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,9 +31,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.movietracker26.data.Datasource
+import com.example.movietracker26.model.Movie
 import com.example.movietracker26.ui.theme.MovieTracker26Theme
 
 class MainActivity : ComponentActivity() {
@@ -52,7 +61,9 @@ fun MyApp(modifier: Modifier = Modifier) {
         if (shouldShowOnboarding) {
             OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
         } else {
-            Greetings()
+            MovieList(
+                movieList = Datasource().loadMovies(),
+                )
         }
     }
 }
@@ -67,7 +78,7 @@ fun OnboardingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Welcome to the Basics Codelab!")
+        Text("Welcome to (name here)!")
         Button(
             modifier = Modifier.padding(vertical = 24.dp),
             onClick = onContinueClicked
@@ -77,32 +88,31 @@ fun OnboardingScreen(
     }
 }
 
+
+
 @Composable
-private fun Greetings(
-    modifier: Modifier = Modifier,
-    names: List<String> = List(1000) { "$it" }
-) {
+private fun MovieList(movieList: List<Movie>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-        items(items = names) { name ->
-            Greeting(name = name)
+        items(movieList) { movie ->
+            MovieCard(movie = movie)
         }
     }
 }
 
 @Composable
-private fun Greeting(name: String, modifier: Modifier = Modifier) {
+private fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
         modifier = modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        CardContent(name)
+        CardContent(movie)
     }
 }
 
 @Composable
-private fun CardContent(name: String) {
+private fun CardContent(movie: Movie) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     Row(
@@ -115,27 +125,30 @@ private fun CardContent(name: String) {
                 )
             )
     ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(12.dp)
-        ) {
-            Text(text = "Hello, ")
+        Column(modifier = Modifier.weight(1f).padding(12.dp)) {
+            Image(
+                painter = painterResource(movie.imageResourceId),
+                contentDescription = stringResource(movie.stringResourceId),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(194.dp),
+                contentScale = ContentScale.Crop
+            )
             Text(
-                text = name, style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.ExtraBold
-                )
+                text = stringResource(movie.stringResourceId),
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.headlineSmall
             )
             if (expanded) {
                 Text(text = ("Composem ipsum color sit lazy, " +
                         "padding theme elit, sed do bouncy. ").repeat(4),
                 )
             }
-        }
-        ElevatedButton(
-            onClick = { expanded = !expanded }
-        ) {
-            Text(if (expanded) "Show less" else "Show more")
+            ElevatedButton(
+                onClick = { expanded = !expanded }
+            ) {
+                Text(if (expanded) "Hide description" else "Show description")
+            }
         }
     }
 }
@@ -150,7 +163,7 @@ private fun CardContent(name: String) {
 @Composable
 fun GreetingPreview() {
     MovieTracker26Theme {
-        Greetings()
+        MovieCard(Movie(R.string.movie2, R.drawable.movie_spidermanbrandnewday))
     }
 }
 
