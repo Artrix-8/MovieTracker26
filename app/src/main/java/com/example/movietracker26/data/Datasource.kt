@@ -7,7 +7,10 @@ class Datasource() {
     fun loadMovies(): List<Movie> {
         return listOf<Movie>(
             Movie(R.string.movie1, R.drawable.movie1),
-            Movie(R.string.movie2, R.drawable.movie2)
+            Movie(R.string.movie2, R.drawable.movie2),
+            Movie(R.string.movie3, R.drawable.movie3),
+            Movie(R.string.movie4, R.drawable.movie4),
+            Movie(R.string.movie5, R.drawable.movie5)
         )
     }
 }
