@@ -92,7 +92,9 @@ fun OnboardingScreen(
 private fun MovieList(movieList: List<Movie>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
         items(movieList) { movie ->
-            MovieCard(movie = movie)
+            if(movie.watchlist) {
+                MovieCard(movie = movie)
+            }
         }
     }
 }
@@ -155,7 +157,7 @@ private fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
 @Composable
 fun MoviePreview() {
     MovieTracker26Theme {
-        MovieCard(Movie(R.string.movie1, R.drawable.movie1))
+        MovieCard(Movie(R.string.movie1, R.drawable.movie1, true))
     }
 }
 
