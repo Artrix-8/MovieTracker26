@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.example.movietracker26.data.Datasource
 import com.example.movietracker26.model.Movie
 import com.example.movietracker26.ui.theme.MovieTracker26Theme
+import androidx.navigation.compose.NavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,42 +52,20 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class MovieScreen {
+    Movies,
+    Watchlist,
+    Description
+}
+
 @Composable
 fun MyApp(modifier: Modifier = Modifier) {
-    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
-
     Surface(modifier, color = MaterialTheme.colorScheme.background) {
-        if (shouldShowOnboarding) {
-            OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
-        } else {
-            MovieList(
+        MovieList(
                 movieList = Datasource().loadMovies(),
                 )
-        }
     }
 }
-
-@Composable
-fun OnboardingScreen(
-    onContinueClicked: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Welcome to (name here)!")
-        Button(
-            modifier = Modifier.padding(vertical = 24.dp),
-            onClick = onContinueClicked
-        ) {
-            Text("Continue")
-        }
-    }
-}
-
-
 
 @Composable
 private fun MovieList(movieList: List<Movie>, modifier: Modifier = Modifier) {
@@ -158,14 +137,6 @@ private fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
 fun MoviePreview() {
     MovieTracker26Theme {
         MovieCard(Movie(R.string.movie1, R.drawable.movie1, true))
-    }
-}
-
-@Preview(showBackground = true, widthDp = 320, heightDp = 320)
-@Composable
-fun OnboardingPreview() {
-    MovieTracker26Theme {
-        OnboardingScreen(onContinueClicked = {})
     }
 }
 
